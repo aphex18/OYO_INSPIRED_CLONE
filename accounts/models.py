@@ -10,12 +10,20 @@ class HotelUser(User):
     otp = models.CharField(max_length=10, blank=True, null=True)
     is_verified = models.BooleanField(default=False)
 
+    class Meta:
+        db_table = 'hotel_user'
 
 class HotelVender(User):
     profile_picture = models.ImageField(upload_to='images/profile_pics/vendor/')
+    business_name = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=15, unique= True)
     email_token = models.CharField(max_length=100, blank=True, null=True)
     otp = models.CharField(max_length=10, blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
+
+
+    class Meta:
+        db_table = 'hotel_vender'
 
 
 
