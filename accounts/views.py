@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, HttpResponse
 from .models import HotelUser
 from django.db.models import Q
 from django.contrib import messages
-from .utlis import generateRandomToken , sendEmailToken
+from .utlis import generateRandomToken , sendEmailToken , sendOTPtoEmail
 from django.contrib.auth import authenticate, login, logout
+import random
 # Create your views here.
 
 def login_page(request):
@@ -18,11 +19,11 @@ def login_page(request):
 
         if not hotel_user.exists():
             messages.warning(request, "Account not found with this email.")
-            return redirect('/account/login/')
+            return redirect('/accounts/login/')
         
         if not hotel_user[0].is_verified:
             messages.warning(request, "Please verify your email before logging in.")
-            return redirect('/account/login/')
+            return redirect('/accounts/login/')
 
         hotel_user = authenticate(username = hotel_user[0].username, password = password)
 
@@ -54,7 +55,7 @@ def register(request):
 
         if hotel_user.exists():
             messages.warning(request, "Account exists with Email or Phone Number.")
-            return redirect('/account/register/')
+            return redirect('/accounts/register/')
 
         hotel_user = HotelUser.objects.create(
             username = phone_number,
@@ -85,3 +86,34 @@ def verify_email_token(request, token):
         return redirect('/accounts/login/')
     except Exception as e:
         return HttpResponse("Invalid email token")
+    
+
+def send_otp(request, email):
+    hotel_user = HotelUser.objects.filter(
+            email = email)
+    if not hotel_user.exists():
+        messages.warning(request, "Account not found with this email.")
+        return redirect('/accounts/login/')
+
+    otp =  random.randint(1000 , 9999)
+    hotel_user.update(otp =otp)
+
+    sendOTPtoEmail(email , otp)
+
+    return redirect(f'/accounts/verify-otp/{email}/')
+
+
+def verify_otp(request , email):
+    if request.method == "POST":
+        otp  = request.POST.get('otp')
+        hotel_user = HotelUser.objects.get(email = email)
+
+        if otp == hotel_user.otp:
+            messages.success(request, "Login Success")
+            login(request , hotel_user)
+            return redirect('/accounts/login/')
+        
+        messages.warning(request, "Wrong OTP")
+        return redirect(f'/accounts/verify-otp/{email}/')
+
+    return render(request , 'verify_otp.html')
