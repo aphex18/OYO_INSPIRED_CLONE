@@ -6,6 +6,7 @@ from .utlis import generateRandomToken , sendEmailToken , sendOTPtoEmail
 from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
+from .utlis import generateSlug
 # Create your views here.
 
 def login_page(request):
@@ -195,3 +196,36 @@ def register_vendor(request):
 def dashboard(request):
     context = {'hotels' : Hotel.objects.filter(hotel_owner = request.user)}
     return render(request, 'vendor/vendor_dashboard.html', context)
+
+
+@login_required(login_url='login_vendor')
+def add_hotel(request):
+        if request.method == "POST":
+            hotel_name = request.POST.get('hotel_name')
+            hotel_description = request.POST.get('hotel_description')
+            amenities = request.POST.getlist('amenities')
+            hotel_price = request.POST.get('hotel_price')
+            hotel_offer_price = request.POST.get('hotel_offer_price')
+            hotel_location = request.POST.get('hotel_location')
+            hotel_slug = generateSlug(hotel_name)
+
+            hotel = Hotel.objects.create(
+                hotel_name=hotel_name,
+                hotel_description=hotel_description,
+                hotel_price=hotel_price,
+                hotel_offer_price=hotel_offer_price,
+                hotel_location=hotel_location,
+                hotel_slug=hotel_slug,
+            )
+
+            for amenity in amenities:
+                amenity = Amenities.objects.get(id=amenity)
+                hotel.amenities.add(amenity)
+                hotel.save()
+
+            messages.success(request, "Hotel added successfully.")
+            return redirect('/accounts/dashboard/')
+
+        amenities = Amenities.objects.all()
+
+        return render(request, 'vendor/add_hotel.html', context = {'amenities': amenities})

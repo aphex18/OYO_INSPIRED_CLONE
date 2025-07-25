@@ -4,3 +4,4 @@ from  .models import *
 
 admin.site.register(HotelUser)
 admin.site.register(HotelVender)
+admin.site.register(Amenities)

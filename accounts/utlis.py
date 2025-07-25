@@ -1,6 +1,8 @@
 import uuid
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils.text import slugify
+from .models import Hotel
 
 
 def generateRandomToken():
@@ -34,3 +36,12 @@ def sendOTPtoEmail(email , otp):
        [email],
        fail_silently=False,
     )
+
+
+
+def generateSlug(instance):
+    slug = slugify(instance.hotel_name) + uuid.uuid4().split('-')[0]
+    # slug = slug[:191]  # Ensure the slug is not longer than 191 characters
+    if Hotel.objects.filter(hotel_slug=slug).exists():
+        return generateSlug(instance)
+    return slug

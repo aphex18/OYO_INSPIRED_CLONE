@@ -1,0 +1,68 @@
+<!--add_hotel.html-->
+{% extends "utils/vendor_base.html" %}
+
+{% block start %}
+
+<div class="container mt-5 pt-5 pb-5">
+
+  <div class="col-6 mx-auto card shadow p-4" style="border:none">
+    <h2>Add Hotel</h2>
+    <form method="POST">
+
+
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
+        <input id="email" type="text" name="hotel_name" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp">
+
+      </div>
+
+      <div class="mb-3">
+        <div class="form-floating">
+          <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here"
+            id="floatingTextarea"></textarea>
+          <label for="floatingTextarea">Hotel Description</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Hotel Price</label>
+        <input id="email" type="number" name="hotel_price" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp">
+
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Hotel Amenities</label>
+        <div
+          style="border: 1px solid #ced4da; border-radius: 0.25rem; padding: 10px; max-height: 150px; overflow-y: auto;">
+          {% for amenity in amenities %}
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="amenities" value="{{ amenity.id }}"
+              id="amenity_{{ amenity.id }}">
+            <label class="form-check-label" for="amenity_{{ amenity.id }}">{{ amenity.name }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
+        <input id="email" type="number" name="hotel_offer_price" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp">
+
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Hotel Location</label>
+        <input id="email" type="text" name="hotel_location" class="form-control" id="exampleInputEmail1"
+          aria-describedby="emailHelp">
+
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
