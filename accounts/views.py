@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from django.db.models import Q
@@ -7,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
 from .utlis import generateSlug
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 def login_page(request):
@@ -209,6 +211,10 @@ def add_hotel(request):
             hotel_location = request.POST.get('hotel_location')
             hotel_slug = generateSlug(hotel_name)
 
+
+            hotel_vender = HotelVender.objects.get(id = request.user.id)
+
+
             hotel = Hotel.objects.create(
                 hotel_name=hotel_name,
                 hotel_description=hotel_description,
@@ -216,6 +222,7 @@ def add_hotel(request):
                 hotel_offer_price=hotel_offer_price,
                 hotel_location=hotel_location,
                 hotel_slug=hotel_slug,
+                hotel_owner = hotel_vender,
             )
 
             for amenity in amenities:
@@ -224,8 +231,34 @@ def add_hotel(request):
                 hotel.save()
 
             messages.success(request, "Hotel added successfully.")
-            return redirect('/accounts/dashboard/')
+            return redirect('/accounts/add-hotel/')
 
         amenities = Amenities.objects.all()
 
         return render(request, 'vendor/add_hotel.html', context = {'amenities': amenities})
+
+
+@login_required(login_url='login_vendor')
+def upload_images(request, slug):
+    hotel_obj = Hotel.objects.get(hotel_slug = slug)
+    if request.method == "POST":
+        image = request.FILES.get('image')
+        if not image:
+            messages.warning(request, "Please select an image to upload.")
+            return redirect(request.path_info)
+        HotelImages.objects.create(
+        hotel = hotel_obj,
+        image = image
+        )
+        return HttpResponseRedirect(request.path_info)
+
+    return render(request, 'vendor/upload_images.html' , context = {'images': hotel_obj.hotels_images.all()})
+
+
+@login_required(login_url='login_vendor')
+def delete_image(request, id):
+
+    hotel_image = HotelImages.objects.get(id = id)
+    hotel_image.delete()
+    messages.success(request, "Hotel Image deleted")
+    return redirect('/accounts/dashboard/')

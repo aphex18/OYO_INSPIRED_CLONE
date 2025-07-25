@@ -39,9 +39,9 @@ def sendOTPtoEmail(email , otp):
 
 
 
-def generateSlug(instance):
-    slug = slugify(instance.hotel_name) + uuid.uuid4().split('-')[0]
-    # slug = slug[:191]  # Ensure the slug is not longer than 191 characters
+def generateSlug(hotel_name):
+    slug = slugify(hotel_name) + "-" + str(uuid.uuid4()).split('-')[0]
+    slug = slug[:191]  # Ensure the slug is not longer than 191 characters
     if Hotel.objects.filter(hotel_slug=slug).exists():
-        return generateSlug(instance)
+        return generateSlug(hotel_name)
     return slug

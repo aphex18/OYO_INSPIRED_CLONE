@@ -12,5 +12,7 @@ urlpatterns = [
     path('register-vendor/' , views.register_vendor, name='register_vendor'),
     path('dashboard/' , views.dashboard, name='dashboard'),
     path('add-hotel/' , views.add_hotel, name='add_hotel'),
+    path('upload-images/<slug>' , views.upload_images, name='upload_images'),
+    path('delete-image/<id>/', views.delete_image, name='delete_image'),
     path('verify-account/<token>/', views.verify_email_token, name='verify_email_token'),
 ]
