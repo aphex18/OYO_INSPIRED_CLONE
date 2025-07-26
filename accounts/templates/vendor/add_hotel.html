@@ -8,8 +8,8 @@
   <div class="col-6 mx-auto card shadow p-4" style="border:none">
     <h2>Add Hotel</h2>
     <form method="POST">
-          {% include "utils/alerts.html" %}
-          {% csrf_token %}
+      {% include "utils/alerts.html" %}
+      {% csrf_token %}
 
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
@@ -19,10 +19,10 @@
       </div>
 
       <div class="mb-3">
+        <label for="floatingTextarea">Hotel Description</label>
         <div class="form-floating">
-          <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here"
-            id="floatingTextarea"></textarea>
-          <label for="floatingTextarea">Hotel Description</label>
+          <textarea name="hotel_description" id="flora" class="form-control"
+            placeholder="Leave a comment here"> {{hotel.hotel_description | safe }}</textarea>
         </div>
       </div>
       <div class="mb-3">
@@ -64,6 +64,10 @@
     </form>
   </div>
 </div>
+
+<script>
+  var editor = new FroalaEditor('#flora');		
+</script>
 
 
 {% endblock %}

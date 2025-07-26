@@ -47,6 +47,9 @@ class Hotel(models.Model):
     hotel_location = models.TextField()
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.hotel_name
+
 
 class HotelImages(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotels_images')

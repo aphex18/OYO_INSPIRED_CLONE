@@ -144,7 +144,7 @@ def login_vendor(request):
         hotel_user = authenticate(username = hotel_user[0].username, password = password)
 
         if hotel_user:
-            messages.success(request, "Login successful.")
+            # messages.success(request, "Login successful.")
             login(request, hotel_user)
             return redirect('/accounts/dashboard/')
 
@@ -262,3 +262,35 @@ def delete_image(request, id):
     hotel_image.delete()
     messages.success(request, "Hotel Image deleted")
     return redirect('/accounts/dashboard/')
+
+
+@login_required(login_url='login_vendor')
+def edit_hotel(request, slug):
+    hotel_obj = Hotel.objects.get(hotel_slug = slug)
+    if request.user.id != hotel_obj.hotel_owner.id:
+        return HttpResponse("You are not authorized")
+
+    if request.method == "POST":
+        hotel_name = request.POST.get('hotel_name')
+        hotel_description = request.POST.get('hotel_description')
+        hotel_price= request.POST.get('hotel_price')
+        hotel_offer_price= request.POST.get('hotel_offer_price')
+        hotel_location= request.POST.get('hotel_location')
+        hotel_obj.hotel_name  = hotel_name
+        hotel_obj.hotel_description  = hotel_description
+        hotel_obj.hotel_price  = hotel_price
+        hotel_obj.hotel_offer_price  = hotel_offer_price
+        hotel_obj.hotel_location  = hotel_location
+        hotel_obj.save()
+        messages.success(request, "Hotel Details Updated")
+
+        return HttpResponseRedirect(request.path_info)
+
+    amenities = Amenities.objects.all()
+    return render(request, 'vendor/edit_hotel.html', context = {'hotel' : hotel_obj, 'amenities' : amenities})
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Logged out successfully.")
+    return redirect('/accounts/login-vendor/')
