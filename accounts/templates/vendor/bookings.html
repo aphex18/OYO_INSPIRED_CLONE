@@ -1,0 +1,30 @@
+{% extends "utils/vendor_base.html" %}
+{% block start %}
+
+<div class="container mt-5">
+  <h2>Your Bookings</h2>
+
+  <div class="row">
+    {% for details in booking %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">{{ details.hotel.hotel_name }}</h5>
+            <ul class="list-group">
+              <li class="list-group-item">
+                Check-in: {{ details.check_in_date }}<br>
+                Check-out: {{ details.check_out_date }}<br>
+                Total Price: ₹{{ details.total_price }}<br>
+                Booking Date: {{ details.booking_date }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No bookings found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

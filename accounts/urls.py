@@ -16,5 +16,6 @@ urlpatterns = [
     path('delete-image/<id>/', views.delete_image, name='delete_image'),
     path('edit-hotel/<slug>/', views.edit_hotel, name='edit_hotel'),
     path('logout/', views.logout_view, name='logout_view'),
+    path('bookings/', views.bookings, name='bookings'),
     path('verify-account/<token>/', views.verify_email_token, name='verify_email_token'),
 ]

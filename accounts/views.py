@@ -289,6 +289,11 @@ def edit_hotel(request, slug):
     amenities = Amenities.objects.all()
     return render(request, 'vendor/edit_hotel.html', context = {'hotel' : hotel_obj, 'amenities' : amenities})
 
+@login_required(login_url='login_vendor')
+def bookings(request):
+    booking = HotelBooking.objects.filter(hotel__hotel_owner = request.user)
+    return render(request, 'vendor/bookings.html', context = {'booking' : booking})
+
 
 def logout_view(request):
     logout(request)
