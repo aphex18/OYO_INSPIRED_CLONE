@@ -116,3 +116,4 @@ For deployment, switch to production-ready tools like Redis for caching.
 To customize hotel filters (e.g., city-based), update the models and templates accordingly.
 
 All environment and configuration settings are controlled via .env and settings.py.
+
