@@ -24,11 +24,15 @@ urlpatterns = [
     path('', include('home.urls')), # Include URLs from the home app
     path('accounts/', include('accounts.urls')), # Include URLs from the accounts app
     path('admin/', admin.site.urls),
+    # path('__debug__/', include('debug_toolbar.urls')),  # Debug toolbar URLs  # add it in if settings.debug is True in code below beacuse it is for development purposes the user can see the debug toolbar in the browser abd the user should not see it in production
 ]
 
 if settings.DEBUG:
+        urlpatterns += [
+            path('__debug__/', include('debug_toolbar.urls')),  # Debug toolbar URLs # like this and remove the above code in production
+        ]
         urlpatterns += static(settings.MEDIA_URL,
-                              document_root=settings.MEDIA_ROOT)
+                            document_root=settings.MEDIA_ROOT)
 
 
 urlpatterns += staticfiles_urlpatterns()

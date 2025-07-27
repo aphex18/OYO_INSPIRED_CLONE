@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',  # Custom app for the OYO clone
-    'accounts'
+    'accounts',
+    "debug_toolbar", # Debug toolbar for development
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware", # Debug toolbar middleware
+]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
 ]
 
 ROOT_URLCONF = 'oyo_clone.urls'
@@ -98,6 +106,38 @@ DATABASES = {
 
 # this is database configuration using MySQL
 # --------------------------------------------------------------------------------
+
+
+# --------------------------------------------------------------------------------
+
+# use this when in production and you want to use redis as cache backend for other cache like memcached the settings will be different
+# in dev use the django built in cache framework just import it where you want to use cache //  from django.core.cache import cache //
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+
+
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",    # alternative settings for django-redis (built-in) given by django cache framework
+#         "LOCATION": "redis://127.0.0.1:6379",
+#     }
+# }
+
+
+
+# configure cache settings to use Redis  # To start using django-redis, you should change your Django cache settings to something like above.
+# --------------------------------------------------------------------------------
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

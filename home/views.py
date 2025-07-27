@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from accounts.models import *
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page  # Import the cache_page decorator to enable per-view caching  # This allows caching the output of specific views for a defined duration
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from datetime import datetime
 # Create your views here.
 
 
-# @cache_page(60 * 2)
+@cache_page(60 * 2)  # Cache the index view for 2 (120 seconds) minutes it will cache the output of this view for 2 minutes
 def index(request):
-    hotels = Hotel.objects.all()
+    hotels = Hotel.objects.all().select_related('hotel_owner').prefetch_related('hotels_images', 'amenities')
 
     if request.GET.get('search'):
         hotels = hotels.filter(hotel_name__icontains = request.GET.get('search'))
