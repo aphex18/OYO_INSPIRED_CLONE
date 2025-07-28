@@ -21,7 +21,7 @@ A full-featured hotel booking web application inspired by OYO. Built with **Djan
 
 - **Backend**: Python, Django
 - **Database**: MySQL (via WAMP server)
-- **Frontend**: HTML, CSS, Bootstrap
+- **Frontend**: HTML, CSS, Bootstrap  
 - **Email**: SMTP (via Gmail or custom server)
 - **Deployment Ready**: Switchable Redis/Cache support via `settings.py`
 - **Consider settings.py for most of configuration**  # add more in future
@@ -52,7 +52,7 @@ OYO_INSPIRED_CLONE/
 
 ## ⚙️ Setup Instructions
 
-0. **Conside the settings.py and .env.sample and requirements for all Config**
+0. **Conside the settings.py and .env.sample and requirements.txt for all Config**
 
 1. **Clone the repo**
 
@@ -116,4 +116,5 @@ For deployment, switch to production-ready tools like Redis for caching.
 To customize hotel filters (e.g., city-based), update the models and templates accordingly.
 
 All environment and configuration settings are controlled via .env and settings.py.
+
 
