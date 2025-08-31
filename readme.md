@@ -30,6 +30,7 @@ A full-featured hotel booking web application inspired by OYO. Built with **Djan
 
 ## 📂 Project Structure
 
+```text
 OYO_INSPIRED_CLONE/
 ├── accounts/ # User login, registration, OTP logic
 ├── hotel/ # Vendor hotel management logic
